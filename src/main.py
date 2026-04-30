@@ -2,6 +2,7 @@ import logging
 from fastapi import FastAPI
 from src.models import WebhookPayload
 from src.enricher import enrich_alert
+from src.triage import call_claude
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("alert-copilot")
@@ -31,6 +32,12 @@ def webhook(payload: WebhookPayload):
         )
         
         context = enrich_alert(alert)
-        results.append(context)
+        triage = call_claude(context)
+        logger.info("Triage result:\n%s", triage)
+        
+        results.append({
+            "context": context,
+            "triage": triage,
+        })
 
     return {"status": "accepted", "alerts_processed": len(results), "contexts": results}
