@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.models import WebhookPayload
 from src.enricher import enrich_alert
 from src.triage import call_claude
+from src.notifier import send_to_discord
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("alert-copilot")
@@ -34,6 +35,7 @@ def webhook(payload: WebhookPayload):
         context = enrich_alert(alert)
         triage = call_claude(context)
         logger.info("Triage result:\n%s", triage)
+        send_to_discord(context, triage)
         
         results.append({
             "context": context,

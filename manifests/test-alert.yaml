@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: test-copilot-alert
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: copilot-test
+      rules:
+        - alert: CopilotTestAlert
+          expr: vector(1)
+          for: 0m
+          labels:
+            severity: critical
+            namespace: monitoring
+            service: orders-service
+          annotations:
+            summary: "Test alert to verify copilot triage pipeline"
+            runbook_url: "https://wiki.example.com/runbooks/test"

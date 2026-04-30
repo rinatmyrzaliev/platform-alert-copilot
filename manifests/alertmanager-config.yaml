@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alert-copilot
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  route:
+    receiver: copilot
+    groupBy:
+      - alertname
+      - namespace
+    groupWait: 10s
+    groupInterval: 1m
+    repeatInterval: 10m
+    matchers:
+      - name: severity
+        matchType: "=~"
+        value: "critical|warning"
+  receivers:
+    - name: copilot
+      webhookConfigs:
+        - url: http://alert-copilot.alert-copilot.svc.cluster.local/webhook
+          sendResolved: false
