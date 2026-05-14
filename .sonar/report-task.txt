@@ -1,0 +1,6 @@
+projectKey=platform-alert-copilot
+serverUrl=http://localhost:9000
+serverVersion=26.3.0.120487
+dashboardUrl=http://localhost:9000/dashboard?id=platform-alert-copilot
+ceTaskId=5336b112-cd08-4b47-9afa-e6557be90fd9
+ceTaskUrl=http://localhost:9000/api/ce/task?id=5336b112-cd08-4b47-9afa-e6557be90fd9
