@@ -35,6 +35,19 @@ jobs:
           severity: 'CRITICAL'
           format: 'table'
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+    
+      - name: SonarQube scan
+        run: |
+          pip install pysonar
+          pysonar \
+            --sonar-host-url=${{ secrets.SONAR_HOST_URL }} \
+            --sonar-token=${{ secrets.SONAR_TOKEN }} \
+            --sonar-project-key=platform-alert-copilot
+
       - name: Push Image
         run: |
           docker push ${{ env.IMAGE }}:${{ github.sha }}
